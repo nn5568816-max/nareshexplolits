@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Login</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif}
+body{background:#f2f4f7;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;color:#222}
+.login-box{width:100%;max-width:400px;background:#fff;border:1px solid #ddd;border-radius:6px;padding:36px 32px}
+.logo{width:52px;height:52px;background:#333;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:22px;margin:0 auto 16px}
+h1{font-size:20px;font-weight:600;text-align:center;margin-bottom:6px}.sub{font-size:13px;color:#777;text-align:center;margin-bottom:26px}
+.form-group{margin-bottom:14px}.form-group label{display:block;font-size:13px;font-weight:500;margin-bottom:5px}
+input{width:100%;padding:10px 12px;background:#fff;border:1px solid #ccc;border-radius:4px;font-size:14px}
+input:focus{outline:none;border-color:#555}.login-btn{width:100%;padding:11px;background:#333;color:#fff;border:0;border-radius:4px;font-size:14px;cursor:pointer}
+.error{background:#fdecea;border:1px solid #f5c6c2;color:#c0392b;padding:10px 14px;border-radius:4px;font-size:13px;margin-bottom:16px}
+.footer{text-align:center;font-size:12px;color:#999;margin-top:18px}
+#disclaimerPopup{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:1;transition:opacity .4s}
+.disc{background:#fff;max-width:560px;width:100%;border-radius:8px;padding:26px 24px;border:1px solid #ddd;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+.disc-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #eee}
+.disc p{font-size:13px;color:#333;line-height:1.65}.count{text-align:right;font-size:11px;color:#999;margin-top:16px}
+</style>
+</head>
+<body>
+<div id="disclaimerPopup"><div class="disc">
+<div class="disc-head"><span>⚠️</span><strong style="color:#c0392b">DISCLAIMER</strong></div>
+<p>This website is strictly for <strong>educational, informational, and demonstration purposes only</strong>. The API uses sample/dummy data. Do not use it to target, identify, track, harass, or harm any individual, or to obtain private information.</p>
+<div class="count">Auto closing in <span id="discCount">2</span>s...</div>
+</div></div>
+<script>
+(function(){let c=2,el=document.getElementById('discCount');let t=setInterval(()=>{c--;if(el)el.textContent=c;if(c<=0)clearInterval(t)},1000);
+setTimeout(()=>{let p=document.getElementById('disclaimerPopup');if(p){p.style.opacity='0';setTimeout(()=>p.remove(),400)}},2000)})();
+</script>
+<div class="login-box">
+<div class="logo">V</div><h1>Admin Login</h1><p class="sub">Sign in to manage the API system</p>
+{% if login_error %}<div class="error"><i class="fas fa-exclamation-circle"></i> {{ login_error }}</div>{% endif %}
+<form method="post">
+<div class="form-group"><label>Username</label><input name="login_user" placeholder="Enter username" required></div>
+<div class="form-group"><label>Password</label><input name="login_pass" type="password" placeholder="Enter password" required></div>
+<button class="login-btn"><i class="fas fa-lock"></i> Sign In</button>
+</form><div class="footer">Secure Administration</div>
+</div>
+</body></html>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif}
+body{background:#f2f4f7;color:#222;line-height:1.5;font-size:14px}a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:230px;background:#fff;border-right:1px solid #ddd;display:flex;flex-direction:column;z-index:1000;transition:transform .25s}
+.brand{padding:18px 20px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:10px}.brand .icon{width:36px;height:36px;background:#333;color:#fff;border-radius:5px;display:flex;align-items:center;justify-content:center;font-weight:700}.brand strong{font-size:14px;display:block}.brand small{font-size:11px;color:#888}
+nav{flex:1;padding:14px 10px;overflow-y:auto}.nav-label{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.5px;padding:10px 10px 4px;font-weight:600}
+nav a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:4px;font-size:13px;color:#555;margin-bottom:2px}nav a:hover,nav a.active{background:#eef1f5;color:#222}nav i{width:16px;text-align:center}
+.foot{padding:14px 18px;border-top:1px solid #eee;font-size:11px;color:#999}.main{margin-left:230px;min-height:100vh}.topbar{background:#fff;border-bottom:1px solid #ddd;padding:0 26px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.crumb{font-size:12px;color:#888}.right{display:flex;align-items:center;gap:12px}.secure{font-size:11px;color:#060;background:#eafaf0;border:1px solid #c8ebd6;padding:3px 10px;border-radius:12px}.logout{font-size:12px;color:#555;border:1px solid #ddd;padding:5px 12px;border-radius:4px}
+.content{padding:24px 26px 40px}.page-title{margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid #e6e6e6}.page-title h1{font-size:22px;font-weight:600}.page-title p{font-size:13px;color:#777;margin-top:2px}
+.alert{padding:11px 16px;border-radius:4px;margin-bottom:18px;font-size:13px}.success{background:#eafaf0;border:1px solid #c8ebd6;color:#0a7a3d}.error{background:#fdecea;border:1px solid #f5c6c2;color:#c0392b}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}.stat{background:#fff;border:1px solid #ddd;border-radius:5px;padding:16px 18px;display:flex;align-items:center;gap:14px}.ico{width:40px;height:40px;border-radius:5px;background:#eef1f5;color:#333;display:flex;align-items:center;justify-content:center;flex-shrink:0}.num{font-size:22px;font-weight:700;line-height:1.1}.lbl{font-size:12px;color:#777}
+.card{background:#fff;border:1px solid #ddd;border-radius:5px;padding:20px 22px;margin-bottom:22px}.card-head{display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid #eee;margin-bottom:18px}.card-head .ico{width:32px;height:32px}.card-head h3{font-size:15px;font-weight:600}.card-head .sub{font-size:12px;color:#888;margin-left:auto}
+.form-group{margin-bottom:14px}.form-group label{display:block;font-size:12px;font-weight:600;margin-bottom:4px}.req{color:#c0392b}.form-group input{width:100%;padding:9px 12px;border:1px solid #ccc;border-radius:4px;font-size:13px}.form-group small{font-size:11px;color:#999;display:block;margin-top:3px}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.service-fixed{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;background:#eef1f5;border:1px solid #ddd;border-radius:4px;font-size:12px;font-weight:600;margin-bottom:16px}.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 20px;border-radius:4px;font-size:13px;font-weight:500}.btn-primary{background:#333;color:#fff;border:0}.btn-secondary{background:#f2f4f7;color:#555;border:1px solid #ddd}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px}th{text-align:left;padding:9px 10px;font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid #ddd;background:#f2f4f7}td{padding:9px 10px;border-bottom:1px solid #eee;vertical-align:middle}.key{font-weight:600;font-size:12px;font-family:monospace}
+.badge{display:inline-block;padding:2px 9px;border-radius:10px;font-size:11px;font-weight:500}.badge-ok{background:#eafaf0;border:1px solid #c8ebd6;color:#0a7a3d}.badge-bad{background:#fdecea;border:1px solid #f5c6c2;color:#c0392b}.badge-info{background:#eaf2fb;border:1px solid #c7dcf4;color:#2358a0}.badge-neutral{background:#f2f4f7;border:1px solid #ddd;color:#555}
+.action-group{display:flex;gap:4px;flex-wrap:wrap}.abtn{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border:0;border-radius:3px;font-size:11px}.abtn-edit{background:#eaf2fb;color:#2358a0}.abtn-toggle{background:#fff7e6;color:#a86a00}.abtn-del{background:#fdecea;color:#c0392b}
+.endpoint{background:#2b2b2b;color:#e8e8e8;border-radius:5px;padding:14px 16px;font-family:monospace;font-size:12px;line-height:1.7;overflow-x:auto}.endpoint .lbl{color:#aaa;font-weight:600;margin-bottom:6px;display:block;font-family:inherit}.endpoint-note{font-size:11px;color:#888;margin-top:10px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:2000;align-items:center;justify-content:center;padding:20px}.modal-box{background:#fff;border:1px solid #ddd;border-radius:5px;padding:24px 26px;max-width:440px;width:100%}.modal-head{display:flex;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid #eee;margin-bottom:18px}.close{font-size:22px;color:#999;border:0;background:none}.modal-actions{display:flex;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid #eee}.modal-actions .btn{flex:1;justify-content:center}
+.foot-bar{margin-top:14px;padding-top:16px;border-top:1px solid #eee;display:flex;justify-content:space-between;font-size:11px;color:#999}.menu-btn,.overlay{display:none}
+#disclaimerPopup{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:1;transition:opacity .4s}.disc{background:#fff;max-width:560px;width:100%;border-radius:8px;padding:26px 24px}.disc-head{display:flex;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #eee}.disc p{font-size:13px;line-height:1.65}.count{text-align:right;font-size:11px;color:#999;margin-top:16px}
+@media(max-width:1024px){.stats{grid-template-columns:repeat(2,1fr)}.form-row{grid-template-columns:1fr}}
+@media(max-width:768px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.menu-btn{display:flex;position:fixed;top:12px;left:12px;z-index:1100;background:#fff;border:1px solid #ddd;border-radius:4px;width:38px;height:38px;align-items:center;justify-content:center}.overlay.active{display:block;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:999}.main{margin-left:0}.topbar{padding:0 16px}.content{padding:16px}.card{padding:16px}.stats{gap:10px}.stat{padding:12px 14px}.num{font-size:18px}.page-title h1{font-size:18px}.foot-bar{flex-direction:column;gap:4px;text-align:center}}
+@media(max-width:480px){.stats{grid-template-columns:1fr}.secure{display:none}}
+</style>
+</head>
+<body>
+<div id="disclaimerPopup"><div class="disc">
+<div class="disc-head"><span style="font-size:22px">⚠️</span><strong style="color:#c0392b">DISCLAIMER</strong></div>
+<p>This website is strictly for <strong>educational, informational, and demonstration purposes only</strong>. The API is demonstrated using sample/dummy data. Do not use this API to target, identify, track, harass, or harm any individual.</p>
+<div class="count">Auto closing in <span id="discCount">2</span>s...</div>
+</div></div>
+<script>
+(function(){let c=2,el=document.getElementById('discCount');let t=setInterval(()=>{c--;if(el)el.textContent=c;if(c<=0)clearInterval(t)},1000);
+setTimeout(()=>{let p=document.getElementById('disclaimerPopup');if(p){p.style.opacity='0';setTimeout(()=>p.remove(),400)}},2000)})();
+</script>
+
+<div class="overlay" id="overlay"></div><button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+<aside class="sidebar" id="sidebar">
+<div class="brand"><div class="icon">V</div><div><strong>Admin Panel</strong><small>Number Info API</small></div></div>
+<nav>
+<div class="nav-label">Main</div>
+<a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a>
+<a href="#create-section"><i class="fas fa-plus-circle"></i> Create Key</a>
+<a href="#keys-section"><i class="fas fa-key"></i> API Keys</a>
+<a href="#endpoint-section"><i class="fas fa-code"></i> Endpoint</a>
+<div class="nav-label">System</div>
+<a href="{{ url_for('reset_daily') }}" onclick="return confirm('Reset all daily usage counters?')"><i class="fas fa-sync-alt"></i> Reset Daily</a>
+<a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+</nav><div class="foot"><i class="fas fa-shield-alt"></i> Secure Session</div>
+</aside>
+
+<div class="main"><header class="topbar"><div class="crumb">Admin / <strong>Dashboard</strong></div><div class="right"><span class="secure"><i class="fas fa-circle" style="font-size:8px"></i> Secure</span><a href="{{ url_for('logout') }}" class="logout"><i class="fas fa-sign-out-alt"></i> Sign Out</a></div></header>
+<div class="content">
+<div class="page-title"><h1>API Management</h1><p>Manage API keys, limits, expiry and access control for the Number Info service.</p></div>
+
+{% with messages=get_flashed_messages(with_categories=true) %}
+{% for category,message in messages %}<div class="alert {{ category }}"><i class="fas {{ 'fa-exclamation-circle' if category=='error' else 'fa-check-circle' }}"></i> {{ message }}</div>{% endfor %}
+{% endwith %}
+
+<div class="stats">
+<div class="stat"><div class="ico"><i class="fas fa-key"></i></div><div><div class="num">{{ keys|length }}</div><div class="lbl">Total Keys</div></div></div>
+<div class="stat"><div class="ico"><i class="fas fa-calendar-day"></i></div><div><div class="num">{{ today_usage }}</div><div class="lbl">Today</div></div></div>
+<div class="stat"><div class="ico"><i class="fas fa-chart-bar"></i></div><div><div class="num">{{ total_usage }}</div><div class="lbl">Total Requests</div></div></div>
+<div class="stat"><div class="ico"><i class="fas fa-check-circle"></i></div><div><div class="num">{{ active_keys }}</div><div class="lbl">Active</div></div></div>
+</div>
+
+<div class="card" id="create-section"><div class="card-head"><div class="ico"><i class="fas fa-plus-circle"></i></div><h3>Create New API Key</h3><span class="sub">Generate a new access credential</span></div>
+<form method="post" action="{{ url_for('create_key') }}">
+<div class="form-group"><label>API Key Text <span class="req">*</span></label><input type="text" name="key_text" placeholder="Enter a unique API key" required></div>
+<label style="font-size:12px;font-weight:600;display:block;margin-bottom:6px">Service Type</label><div class="service-fixed"><i class="fas fa-phone"></i> NUMBER INFO (Fixed)</div>
+<div class="form-row"><div class="form-group"><label>Daily Limit</label><input type="number" name="daily_limit" value="100" min="0"><small>0 = unlimited</small></div>
+<div class="form-group"><label>Expiry Date</label><input type="date" name="expiry_date"><small>Leave blank for no expiry</small></div></div>
+<button class="btn btn-primary"><i class="fas fa-key"></i> Create Key</button>
+</form></div>
+
+<div class="card" id="keys-section"><div class="card-head"><div class="ico"><i class="fas fa-list-alt"></i></div><h3>API Key Registry</h3><span class="sub">Manage all issued credentials</span></div>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>API Key</th><th>Limit</th><th>Today</th><th>Total</th><th>Created</th><th>Expiry</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+{% for k in keys %}
+<tr><td><strong style="color:#999">#{{ k.id }}</strong></td><td><span class="key">{{ k.key_text }}</span></td><td>{{ '∞' if k.daily_limit==0 else k.daily_limit }}</td>
+<td><span class="badge {{ 'badge-ok' if k.today>0 else 'badge-neutral' }}">{{ k.today }}</span></td><td>{{ k.total }}</td>
+<td><span class="badge badge-neutral">{{ k.created_at[:10] }}</span></td>
+<td>{% if k.expired %}<span class="badge badge-bad">Expired</span>{% elif k.expiry_date %}<span class="badge badge-info">{{ k.expiry_date }}</span>{% else %}<span class="badge badge-neutral">Never</span>{% endif %}</td>
+<td>{% if k.active %}<span class="badge badge-ok"><i class="fas fa-check"></i> Active</span>{% else %}<span class="badge badge-bad"><i class="fas fa-ban"></i> Revoked</span>{% endif %}</td>
+<td><div class="action-group">
+<button class="abtn abtn-edit" onclick='openEdit({{ k.id|tojson }},{{ k.daily_limit|tojson }},{{ k.expiry_date|tojson }})'><i class="fas fa-edit"></i> Edit</button>
+<form method="post" action="{{ url_for('toggle_key') }}" style="display:inline"><input type="hidden" name="id" value="{{ k.id }}"><button class="abtn abtn-toggle"><i class="fas {{ 'fa-ban' if k.active else 'fa-check' }}"></i> {{ 'Revoke' if k.active else 'Activate' }}</button></form>
+<form method="post" action="{{ url_for('delete_key') }}" style="display:inline" onsubmit="return confirm('Delete this API key permanently?')"><input type="hidden" name="id" value="{{ k.id }}"><button class="abtn abtn-del"><i class="fas fa-trash-alt"></i></button></form>
+</div></td></tr>
+{% else %}<tr><td colspan="9" style="text-align:center;padding:26px;color:#999">No API keys yet. Create one above.</td></tr>{% endfor %}
+</tbody></table></div></div>
+
+<div class="card" id="endpoint-section"><div class="card-head"><div class="ico"><i class="fas fa-code"></i></div><h3>API Endpoint</h3><span class="sub">Number Info service</span></div>
+<div class="endpoint"><span class="lbl">Base URL: {{ base_url }}</span><div><strong style="color:#f0a04b">GET</strong> {{ base_url }}/api.py?key=YOUR_KEY&amp;num=9876543210</div></div>
+<div class="endpoint-note"><i class="fas fa-info-circle"></i> Replace YOUR_KEY with a valid API key. Number must be 10 digits. Demo endpoint returns sample data only.</div></div>
+<div class="foot-bar"><span>&copy; 2026 Number Info API</span><span><i class="fas fa-shield-alt"></i> Secure Administration Panel</span></div>
+</div></div>
+
+<div class="modal" id="editModal"><div class="modal-box"><div class="modal-head"><h3><i class="fas fa-edit"></i> Edit API Key</h3><button class="close" onclick="closeEdit()">&times;</button></div>
+<form method="post" action="{{ url_for('edit_key') }}"><input type="hidden" name="id" id="edit_id">
+<div class="form-group"><label>Daily Limit</label><input type="number" name="daily_limit" id="edit_limit" min="0"><small>0 = unlimited</small></div>
+<div class="form-group"><label>Expiry Date</label><input type="date" name="expiry_date" id="edit_expiry"><small>Leave blank for no expiry</small></div>
+<div class="modal-actions"><button type="button" class="btn btn-secondary" onclick="closeEdit()">Cancel</button><button class="btn btn-primary"><i class="fas fa-save"></i> Save</button></div>
+</form></div></div>
+<script>
+function openEdit(id,limit,expiry){document.getElementById('edit_id').value=id;document.getElementById('edit_limit').value=limit;document.getElementById('edit_expiry').value=expiry||'';document.getElementById('editModal').style.display='flex';document.body.style.overflow='hidden'}
+function closeEdit(){document.getElementById('editModal').style.display='none';document.body.style.overflow=''}
+window.onclick=function(e){if(e.target===document.getElementById('editModal'))closeEdit()}
+document.getElementById('menuBtn').addEventListener('click',()=>{document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('active')})
+document.getElementById('overlay').addEventListener('click',()=>{document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('active')})
+document.querySelectorAll('.sidebar nav a[href^="#"]').forEach(link=>link.addEventListener('click',e=>{let t=document.querySelector(link.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('active')}}))
+</script>
+</body></html>
